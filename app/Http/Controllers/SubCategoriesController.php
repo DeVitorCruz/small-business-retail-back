@@ -9,9 +9,22 @@ class SubCategoriesController extends Controller
 {
     public function index()
     {
-        $subCategories = SubCategories::with('category')->get();
+
+        $relations = ['categories', 'variationsTypes'];
+
+        $subCategories = SubCategories::with($relations)->get();
 
         return response()->json($subCategories, 200);
+    }
+
+    public function indexWithProduct()
+    {
+
+        $relations = ['products.images', 'categories'];
+
+        $subCategories = SubCategories::with($relations)->get();
+
+        return response()->json($subCategories);
     }
 
     public function store(Request $request)
@@ -28,7 +41,7 @@ class SubCategoriesController extends Controller
 
     public function show($id)
     {
-        $subCategory = SubCategories::with('category')->findOrFail($id);
+        $subCategory = SubCategories::with('categories')->findOrFail($id);
 
         return response()->json($subCategory, 200);
     }
@@ -45,7 +58,6 @@ class SubCategoriesController extends Controller
 
         return response()->json(['message' => 'SubCategory updated successfully!', 'subCategory' => $subCategory], 200);
     }
-
 
     public function destroy($id)
     {

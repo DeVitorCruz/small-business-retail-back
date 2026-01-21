@@ -11,13 +11,19 @@ class CategoriesController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
 
         $relations = [
             'categories'
         ];
 
         return Categories::all();
+    }
+
+    public function indexWithProducts()
+    {
+        $categories = Categories::with(['subCategories.products.images'])->get();
+        return response()->json($categories);
     }
 
     /**
